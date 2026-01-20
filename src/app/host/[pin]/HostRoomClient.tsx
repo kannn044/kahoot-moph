@@ -16,41 +16,46 @@ type Room = {
 type Player = { id: string; nickname: string };
 
 type HostMessage =
-  | {
-      type: "host_welcome";
-      id: string;
-      pin: string;
-      players: Player[];
-      state: "waiting" | "running" | "ended";
-      questionIndex: number;
-    }
-  | { type: "room_update"; pin: string; players: Player[] }
-  | { type: "starting"; pin: string; startsAt: number }
-  | { type: "game_started"; pin: string }
-  | {
-      type: "question";
-      pin: string;
-      questionIndex: number;
-      totalQuestions: number;
-      text: string;
-      choices: [string, string, string, string];
-      endsAt: number;
-    }
-  | {
-      type: "question_over";
-      pin: string;
-      questionIndex: number;
-      nextQuestionAt: number;
-      leaderboard: Array<{ id: string; nickname: string; score: number }>;
-      top3: Array<{ id: string; nickname: string; score: number }>;
-    }
-  | {
-      type: "game_over";
-      pin: string;
-      leaderboard: Array<{ id: string; nickname: string; score: number }>;
-      top3: Array<{ id: string; nickname: string; score: number }>;
-    }
-  | { type: "error"; code?: string; message: string };
+  | ({
+      serverNow?: number;
+    } &
+      (
+        | {
+            type: "host_welcome";
+            id: string;
+            pin: string;
+            players: Player[];
+            state: "waiting" | "running" | "ended";
+            questionIndex: number;
+          }
+        | { type: "room_update"; pin: string; players: Player[] }
+        | { type: "starting"; pin: string; startsAt: number }
+        | { type: "game_started"; pin: string }
+        | {
+            type: "question";
+            pin: string;
+            questionIndex: number;
+            totalQuestions: number;
+            text: string;
+            choices: [string, string, string, string];
+            endsAt: number;
+          }
+        | {
+            type: "question_over";
+            pin: string;
+            questionIndex: number;
+            nextQuestionAt: number;
+            leaderboard: Array<{ id: string; nickname: string; score: number }>;
+            top3: Array<{ id: string; nickname: string; score: number }>;
+          }
+        | {
+            type: "game_over";
+            pin: string;
+            leaderboard: Array<{ id: string; nickname: string; score: number }>;
+            top3: Array<{ id: string; nickname: string; score: number }>;
+          }
+        | { type: "error"; code?: string; message: string }
+      ));
 
 function getWsUrl() {
   const envUrl = process.env.NEXT_PUBLIC_WS_URL;
@@ -103,6 +108,15 @@ export default function HostRoomClient({
 
   const wsRef = useRef<WebSocket | null>(null);
   const prevScoresRef = useRef<Map<string, number>>(new Map());
+  const serverOffsetMsRef = useRef<number>(0);
+
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setNowMs(Date.now() + serverOffsetMsRef.current),
+      200,
+    );
+    return () => window.clearInterval(id);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -176,6 +190,11 @@ export default function HostRoomClient({
         msg = JSON.parse(String(event.data));
       } catch {
         return;
+      }
+
+      if (typeof msg.serverNow === "number" && Number.isFinite(msg.serverNow)) {
+        serverOffsetMsRef.current = msg.serverNow - Date.now();
+        setNowMs(Date.now() + serverOffsetMsRef.current);
       }
 
       if (msg.type === "host_welcome") {
@@ -260,17 +279,6 @@ export default function HostRoomClient({
       ws.close();
     };
   }, [status, pin, hostKey]);
-
-  useEffect(() => {
-    if (
-      !question &&
-      !(leaderboard && typeof nextQuestionAt === "number") &&
-      !(typeof gameStartsAt === "number")
-    )
-      return;
-    const id = window.setInterval(() => setNowMs(Date.now()), 200);
-    return () => window.clearInterval(id);
-  }, [question, leaderboard, nextQuestionAt, gameStartsAt]);
 
   const secondsToNext = useMemo(() => {
     if (!leaderboard) return null;

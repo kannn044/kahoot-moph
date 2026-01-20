@@ -9,48 +9,53 @@ import AnimatedNumber from "@/components/AnimatedNumber";
 type Player = { id: string; nickname: string };
 
 type ServerMessage =
-  | {
-      type: "welcome";
-      id: string;
-      pin: string;
-      nickname: string;
-      players: Player[];
-    }
-  | { type: "room_update"; pin: string; players: Player[] }
-  | { type: "starting"; pin: string; startsAt: number }
-  | { type: "game_started"; pin: string }
-  | {
-      type: "question";
-      pin: string;
-      questionIndex: number;
-      totalQuestions: number;
-      text: string;
-      choices: [string, string, string, string];
-      endsAt: number;
-    }
-  | {
-      type: "answer_result";
-      pin: string;
-      questionIndex: number;
-      correct: boolean;
-      delta: number;
-      total: number;
-    }
-  | {
-      type: "question_over";
-      pin: string;
-      questionIndex: number;
-      nextQuestionAt: number;
-      leaderboard: Array<{ id: string; nickname: string; score: number }>;
-      top3: Array<{ id: string; nickname: string; score: number }>;
-    }
-  | {
-      type: "game_over";
-      pin: string;
-      leaderboard: Array<{ id: string; nickname: string; score: number }>;
-      top3: Array<{ id: string; nickname: string; score: number }>;
-    }
-  | { type: "error"; code?: string; message: string };
+  | ({
+      serverNow?: number;
+    } &
+      (
+        | {
+            type: "welcome";
+            id: string;
+            pin: string;
+            nickname: string;
+            players: Player[];
+          }
+        | { type: "room_update"; pin: string; players: Player[] }
+        | { type: "starting"; pin: string; startsAt: number }
+        | { type: "game_started"; pin: string }
+        | {
+            type: "question";
+            pin: string;
+            questionIndex: number;
+            totalQuestions: number;
+            text: string;
+            choices: [string, string, string, string];
+            endsAt: number;
+          }
+        | {
+            type: "answer_result";
+            pin: string;
+            questionIndex: number;
+            correct: boolean;
+            delta: number;
+            total: number;
+          }
+        | {
+            type: "question_over";
+            pin: string;
+            questionIndex: number;
+            nextQuestionAt: number;
+            leaderboard: Array<{ id: string; nickname: string; score: number }>;
+            top3: Array<{ id: string; nickname: string; score: number }>;
+          }
+        | {
+            type: "game_over";
+            pin: string;
+            leaderboard: Array<{ id: string; nickname: string; score: number }>;
+            top3: Array<{ id: string; nickname: string; score: number }>;
+          }
+        | { type: "error"; code?: string; message: string }
+      ));
 
 function getWsUrl() {
   const envUrl = process.env.NEXT_PUBLIC_WS_URL;
@@ -143,6 +148,15 @@ export default function LobbyClient({
 
   const wsRef = useRef<WebSocket | null>(null);
   const prevScoresRef = useRef<Map<string, number>>(new Map());
+  const serverOffsetMsRef = useRef<number>(0);
+
+  useEffect(() => {
+    const id = window.setInterval(
+      () => setNowMs(Date.now() + serverOffsetMsRef.current),
+      200,
+    );
+    return () => window.clearInterval(id);
+  }, []);
 
   useEffect(() => {
     if (joinError) return;
@@ -162,6 +176,11 @@ export default function LobbyClient({
         msg = JSON.parse(String(event.data));
       } catch {
         return;
+      }
+
+      if (typeof msg.serverNow === "number" && Number.isFinite(msg.serverNow)) {
+        serverOffsetMsRef.current = msg.serverNow - Date.now();
+        setNowMs(Date.now() + serverOffsetMsRef.current);
       }
 
       if (msg.type === "welcome") {
@@ -231,10 +250,13 @@ export default function LobbyClient({
       if (msg.type === "question_over") {
         setQuestion(null);
         setSelectedChoice(null);
-        setAnswerFeedback(null);
-        setLeaderboard(msg.leaderboard);
-        setLeaderboardTitle(`Ranking (Q${msg.questionIndex + 1})`);
-        setNextQuestionAt(msg.nextQuestionAt);
+      useEffect(() => {
+        const id = window.setInterval(
+          () => setNowMs(Date.now() + serverOffsetMsRef.current),
+          200,
+        );
+        return () => window.clearInterval(id);
+      }, []);
         setGameStartsAt(null);
         return;
       }
@@ -270,17 +292,6 @@ export default function LobbyClient({
       ws.close();
     };
   }, [pin, nicknameParam, joinError]);
-
-  useEffect(() => {
-    if (
-      !question &&
-      !(leaderboard && typeof nextQuestionAt === "number") &&
-      !(typeof gameStartsAt === "number")
-    )
-      return;
-    const id = window.setInterval(() => setNowMs(Date.now()), 200);
-    return () => window.clearInterval(id);
-  }, [question, leaderboard, nextQuestionAt, gameStartsAt]);
 
   const secondsToNext = useMemo(() => {
     if (!leaderboard) return null;

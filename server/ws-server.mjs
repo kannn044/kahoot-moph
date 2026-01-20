@@ -113,6 +113,7 @@ function endQuestion(pin, questionIndex) {
   sendToRoom(pin, {
     type: "question_over",
     pin,
+    serverNow: Date.now(),
     questionIndex,
     nextQuestionAt,
     leaderboard,
@@ -137,7 +138,13 @@ function startQuestion(pin) {
     game.state = "ended";
 
     const leaderboard = computeLeaderboard(pin);
-    sendToRoom(pin, { type: "game_over", pin, leaderboard, top3: leaderboard.slice(0, 3) });
+    sendToRoom(pin, {
+      type: "game_over",
+      pin,
+      serverNow: Date.now(),
+      leaderboard,
+      top3: leaderboard.slice(0, 3),
+    });
     return;
   }
 
@@ -156,6 +163,7 @@ function startQuestion(pin) {
   sendToRoom(pin, {
     type: "question",
     pin,
+    serverNow: Date.now(),
     questionIndex: nextIndex,
     totalQuestions: questions.length,
     text: String(q?.text ?? ""),
@@ -246,7 +254,16 @@ wss.on("connection", (ws) => {
       roomPlayers.set(id, { id, nickname: finalNickname });
       sockets.set(id, ws);
 
-      ws.send(JSON.stringify({ type: "welcome", id, pin, nickname: finalNickname, players: listRealPlayers(pin) }));
+      ws.send(
+        JSON.stringify({
+          type: "welcome",
+          id,
+          pin,
+          serverNow: Date.now(),
+          nickname: finalNickname,
+          players: listRealPlayers(pin),
+        }),
+      );
       broadcastRoom(pin);
 
       const existingGame = games.get(pin);
@@ -258,6 +275,7 @@ wss.on("connection", (ws) => {
           JSON.stringify({
             type: "question",
             pin,
+            serverNow: Date.now(),
             questionIndex: existingGame.questionIndex,
             totalQuestions: questions.length,
             text: String(q?.text ?? ""),
@@ -317,6 +335,7 @@ wss.on("connection", (ws) => {
           type: "host_welcome",
           id,
           pin,
+          serverNow: Date.now(),
           players: listRealPlayers(pin),
           state: game.state,
           questionIndex: game.questionIndex,
@@ -352,7 +371,7 @@ wss.on("connection", (ws) => {
       for (const p of listRealPlayers(pin)) game.scores.set(p.id, 0);
 
       const startsAt = Date.now() + PRE_START_MS;
-      sendToRoom(pin, { type: "starting", pin, startsAt });
+      sendToRoom(pin, { type: "starting", pin, serverNow: Date.now(), startsAt });
       setTimeout(() => {
         const g = games.get(pin);
         if (!g) return;
@@ -360,7 +379,7 @@ wss.on("connection", (ws) => {
         // If another start happened, ignore this timer.
         if (g.questionIndex !== -1) return;
 
-        sendToRoom(pin, { type: "game_started", pin });
+        sendToRoom(pin, { type: "game_started", pin, serverNow: Date.now() });
         startQuestion(pin);
       }, PRE_START_MS);
       return;
@@ -377,6 +396,9 @@ wss.on("connection", (ws) => {
       if (questionIndex !== game.questionIndex) return;
       if (choiceIndex < 0 || choiceIndex > 3) return;
       if (typeof game.questionStartedAt !== "number" || typeof game.questionEndsAt !== "number") return;
+
+      // Ignore late answers (clients may have clock skew; server enforces the timer).
+      if (Date.now() > game.questionEndsAt) return;
 
       const answeredSet = game.answeredByQuestion.get(questionIndex) ?? new Set();
       if (answeredSet.has(state.id)) return;
