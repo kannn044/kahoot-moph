@@ -1,0 +1,265 @@
+{
+  "rooms": [
+    {
+      "pin": "123456",
+      "title": "Demo Room"
+    },
+    {
+      "pin": "654321",
+      "title": "Another Room"
+    },
+    {
+      "pin": "732826",
+      "title": "ทดสอบความรู้ AI for Smart Government",
+      "hostKey": "9dc0aae7b3864b9a",
+      "quiz": {
+        "title": "ทดสอบความรู้ AI for Smart Government",
+        "questions": [
+          {
+            "id": "8335ee3f-39a1-4a41-b8ee-3f2df32c3bb1",
+            "topic": "ทดสอบความรู้ AI for Smart Government",
+            "text": "ในการอบรมครั้งนี้ เราเปรียบเทียบ AI ว่ามีลักษณะการทำงานคล้ายกับตำแหน่งใดมากที่สุด?",
+            "choices": [
+              "CEO ผู้มีอำนาจตัดสินใจ",
+              "ยามรักษาความปลอดภัย",
+              "Super Intern (เด็กฝึกงานเกียรตินิยม)",
+              "แม่บ้านทำความสะอาด"
+            ],
+            "correctIndex": 2,
+            "timerSeconds": 10
+          }
+        ]
+      },
+      "createdAt": "2026-01-14T08:39:09.625Z",
+      "updatedAt": "2026-01-14T08:39:09.625Z"
+    },
+    {
+      "pin": "707525",
+      "title": "ทดสอบความรู้ AI for Smart Government",
+      "hostKey": "ae33780051024202",
+      "quiz": {
+        "topic": "ทดสอบความรู้ AI for Smart Government",
+        "questions": [
+          {
+            "id": "a8a87a9a-170c-45d0-8500-03635d8edcef",
+            "text": "ในการอบรมครั้งนี้ เราเปรียบเทียบ AI ว่ามีลักษณะการทำงานคล้ายกับตำแหน่งใดมากที่สุด?",
+            "choices": [
+              "CEO ผู้มีอำนาจตัดสินใจ",
+              "ยามรักษาความปลอดภัย",
+              "Super Intern (เด็กฝึกงานเกียรตินิยม)",
+              "แม่บ้านทำความสะอาด"
+            ],
+            "correctIndex": 2,
+            "timerSeconds": 10
+          }
+        ]
+      },
+      "createdAt": "2026-01-14T08:51:11.274Z",
+      "updatedAt": "2026-01-14T08:51:11.274Z"
+    },
+    {
+      "pin": "191395",
+      "title": "ทดสอบความรู้ AI for Smart Government",
+      "hostKey": "584a3e56f33746fc",
+      "quiz": {
+        "topic": "ทดสอบความรู้ AI for Smart Government",
+        "questions": [
+          {
+            "id": "a8a87a9a-170c-45d0-8500-03635d8edcef",
+            "text": "ในการอบรมครั้งนี้ เราเปรียบเทียบ AI ว่ามีลักษณะการทำงานคล้ายกับตำแหน่งใดมากที่สุด?",
+            "choices": [
+              "CEO ผู้มีอำนาจตัดสินใจ",
+              "ยามรักษาความปลอดภัย",
+              "Super Intern (เด็กฝึกงานเกียรตินิยม)",
+              "แม่บ้านทำความสะอาด"
+            ],
+            "correctIndex": 2,
+            "timerSeconds": 10
+          },
+          {
+            "id": "80b41486-68ff-41c6-8432-2a4dbfa34776",
+            "text": "หากต้องการร่างหนังสือราชการ หรือเขียนอีเมลด้วยภาษาไทยที่สละสลวย เป็นธรรมชาติที่สุด ควรเลือกใช้เครื่องมือใด?",
+            "choices": [
+              "Claude 3.5 Sonnet",
+              "Excel Copilot",
+              "Midjourney",
+              "GitHub Copilot"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          }
+        ]
+      },
+      "createdAt": "2026-01-14T08:52:08.553Z",
+      "updatedAt": "2026-01-14T08:52:08.553Z"
+    },
+    {
+      "pin": "286862",
+      "title": "ทดสอบความรู้ AI for Smart Government",
+      "hostKey": "d2e7412516b8497c",
+      "quiz": {
+        "topic": "ทดสอบความรู้ AI for Smart Government",
+        "questions": [
+          {
+            "id": "a8a87a9a-170c-45d0-8500-03635d8edcef",
+            "text": "ในการอบรมครั้งนี้ เราเปรียบเทียบ AI ว่ามีลักษณะการทำงานคล้ายกับตำแหน่งใดมากที่สุด?",
+            "choices": [
+              "CEO ผู้มีอำนาจตัดสินใจ",
+              "ยามรักษาความปลอดภัย",
+              "Super Intern (เด็กฝึกงานเกียรตินิยม)",
+              "แม่บ้านทำความสะอาด"
+            ],
+            "correctIndex": 2,
+            "timerSeconds": 10
+          },
+          {
+            "id": "80b41486-68ff-41c6-8432-2a4dbfa34776",
+            "text": "หากต้องการร่างหนังสือราชการ หรือเขียนอีเมลด้วยภาษาไทยที่สละสลวย เป็นธรรมชาติที่สุด ควรเลือกใช้เครื่องมือใด?",
+            "choices": [
+              "Claude 3.5 Sonnet",
+              "Excel Copilot",
+              "Midjourney",
+              "GitHub Copilot"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          }
+        ]
+      },
+      "createdAt": "2026-01-14T08:52:21.392Z",
+      "updatedAt": "2026-01-14T08:52:21.392Z"
+    },
+    {
+      "pin": "626026",
+      "title": "test",
+      "hostKey": "6caaf6b014bd4486",
+      "quiz": {
+        "topic": "test",
+        "questions": [
+          {
+            "id": "b62b7ad9-c8c0-4d5f-a3cc-665806b93940",
+            "text": "q1",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "c22e1805-1911-47e6-941c-e3a58bff9bfb",
+            "text": "q2",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          }
+        ]
+      },
+      "createdAt": "2026-01-20T03:55:15.352Z",
+      "updatedAt": "2026-01-20T03:55:15.352Z"
+    },
+    {
+      "pin": "997200",
+      "title": "test",
+      "hostKey": "6add703b24bf4a4d",
+      "quiz": {
+        "topic": "test",
+        "questions": [
+          {
+            "id": "b62b7ad9-c8c0-4d5f-a3cc-665806b93940",
+            "text": "q1",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "c22e1805-1911-47e6-941c-e3a58bff9bfb",
+            "text": "q2",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "0f8c0c25-91ec-4847-a56b-060b4ae84f0f",
+            "text": "q3",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "112f343f-c6ba-48e2-9b60-27bf781035cc",
+            "text": "q4",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "d99036a6-f6d0-4366-8228-ce50a2d7b3af",
+            "text": "q5",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "54d15c68-55c5-4e2d-a64c-98249d17e7b8",
+            "text": "q6",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          },
+          {
+            "id": "bb71a5db-d113-4c38-a8ff-0cc5338e8890",
+            "text": "q7",
+            "choices": [
+              "a1",
+              "a2",
+              "a3",
+              "a4"
+            ],
+            "correctIndex": 0,
+            "timerSeconds": 10
+          }
+        ]
+      },
+      "createdAt": "2026-01-20T03:57:22.885Z",
+      "updatedAt": "2026-01-20T03:57:22.885Z"
+    }
+  ]
+}

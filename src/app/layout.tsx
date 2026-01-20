@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +28,33 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <header className="border-b border-foreground/10 bg-background">
+          <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
+            <Link href="/" className="text-sm font-semibold tracking-tight">
+              Kahoot-style
+            </Link>
+            <nav className="flex items-center gap-2 text-sm">
+              <Link
+                href="/"
+                className="rounded-lg px-3 py-2 hover:bg-foreground/5"
+              >
+                Join
+              </Link>
+              <Link
+                href="/create"
+                className="rounded-lg px-3 py-2 hover:bg-foreground/5"
+              >
+                Create quiz
+              </Link>
+              <Link
+                href="/host"
+                className="rounded-lg px-3 py-2 hover:bg-foreground/5"
+              >
+                Host
+              </Link>
+            </nav>
+          </div>
+        </header>
         {children}
       </body>
     </html>
