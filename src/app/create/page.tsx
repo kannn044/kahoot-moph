@@ -8,6 +8,7 @@ import {
   type QuizQuestion,
   validateQuizDraft,
 } from "@/lib/quiz";
+import { withBasePath } from "@/lib/public-base-path";
 
 function QuestionRow({
   label,
@@ -109,7 +110,7 @@ export default function CreateQuizPage() {
 
     setSaving(true);
     try {
-      const res = await fetch("/api/rooms", {
+      const res = await fetch(withBasePath("/api/rooms"), {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({

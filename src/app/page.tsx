@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { withBasePath } from "@/lib/public-base-path";
 
 type RoomListItem = { pin: string; title: string };
 
@@ -20,7 +21,7 @@ export default function Home() {
     async function loadRooms() {
       try {
         setRoomsError(null);
-        const res = await fetch("/api/rooms", { cache: "no-store" });
+        const res = await fetch(withBasePath("/api/rooms"), { cache: "no-store" });
         if (!res.ok) throw new Error("FAILED");
         const data = (await res.json()) as { rooms?: RoomListItem[] };
         const nextRooms = Array.isArray(data.rooms) ? data.rooms : [];

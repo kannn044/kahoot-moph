@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useFlipList } from "@/lib/useFlipList";
+import { withBasePath } from "@/lib/public-base-path";
 import AnimatedNumber from "@/components/AnimatedNumber";
 
 type Player = { id: string; nickname: string };
@@ -76,7 +77,9 @@ export default function LobbyClient({
     async function loadRoomTitle() {
       try {
         setRoomLookupError(null);
-        const res = await fetch(`/api/rooms?pin=${encodeURIComponent(pin)}`);
+        const res = await fetch(
+          withBasePath(`/api/rooms?pin=${encodeURIComponent(pin)}`)
+        );
         if (res.status === 404) {
           if (!cancelled) setRoomLookupError("Invalid game PIN");
           return;

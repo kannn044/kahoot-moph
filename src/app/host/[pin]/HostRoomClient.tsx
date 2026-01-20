@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { QuizDraft } from "@/lib/quiz";
 import { useFlipList } from "@/lib/useFlipList";
+import { withBasePath } from "@/lib/public-base-path";
 import AnimatedNumber from "@/components/AnimatedNumber";
 
 type Room = {
@@ -111,8 +112,10 @@ export default function HostRoomClient({
       setError(null);
       try {
         const res = await fetch(
-          `/api/rooms?pin=${encodeURIComponent(pin)}&hostKey=${encodeURIComponent(hostKey)}`,
-          { cache: "no-store" },
+          withBasePath(
+            `/api/rooms?pin=${encodeURIComponent(pin)}&hostKey=${encodeURIComponent(hostKey)}`
+          ),
+          { cache: "no-store" }
         );
         const json = (await res.json().catch(() => null)) as
           | { room?: Room; error?: string }
