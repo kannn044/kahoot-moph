@@ -250,13 +250,10 @@ export default function LobbyClient({
       if (msg.type === "question_over") {
         setQuestion(null);
         setSelectedChoice(null);
-      useEffect(() => {
-        const id = window.setInterval(
-          () => setNowMs(Date.now() + serverOffsetMsRef.current),
-          200,
-        );
-        return () => window.clearInterval(id);
-      }, []);
+        setAnswerFeedback(null);
+        setLeaderboard(msg.leaderboard);
+        setLeaderboardTitle(`Ranking (Q${msg.questionIndex + 1})`);
+        setNextQuestionAt(msg.nextQuestionAt);
         setGameStartsAt(null);
         return;
       }
